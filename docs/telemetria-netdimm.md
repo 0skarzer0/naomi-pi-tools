@@ -18,7 +18,8 @@ con 512 KB, 60).
    `naomi_live`, struct `naomi_live_t` de `src/naomi/naomi.h`): segundos, fps emulados y mostrados, % de ocupación,
    tiempos por CPU emulada, sonido, vídeo… La primera palabra es una «firma» (`0x454d414d` = «MAME») para saber que
    se está leyendo el bloque y no otra cosa.
-4. `pi/live.py` lee ese bloque cuatro veces por segundo y escribe una línea por segundo.
+4. `pi/live.py` lee ese bloque cuatro veces por segundo y escribe una línea por segundo. Reconoce el bloque por la
+   firma (tabla de abajo); no hay que decirle de qué programa es.
 
 ## Usarlo
 
@@ -37,6 +38,27 @@ Ejemplo de salida (Super Sprint, tiempos en ms por frame emulado):
 ```
 seconds 59 emulated 60 shown 60 busy 74 game_loops 29 cpu0 7.1 cpu1 1.0 cpu2 0.0 sound 1.4 video 1.0 upload 0.0 ...
 ```
+
+## Formatos que reconoce
+
+| Firma | Programa | Bloque | Qué enseña |
+|---|---|---|---|
+| `NKLV` | juegos sobre [naomi-kit](https://github.com/0skarzer0/naomi-kit) (OutRunners) | `nk_live_head` + las palabras del juego, con sus nombres | `fps` (palabras del juego y del kit), `log` (consola), `words` |
+| `MAME` | [mame4all-naomi](https://github.com/0skarzer0/mame4all-naomi) | `naomi_live_t` | `fps`: frames emulados y mostrados, tiempos por CPU, sonido, vídeo |
+| `NEST` | [Daytona USA nativo](https://github.com/0skarzer0/daytona-arcade-recomp/tree/naomi-native/platform/dreamcast-native/naomi) | `nm_naomi_live` | `fps`, `log`, `reset` (el peor segundo) |
+| `LIVE` | programas de KallistiOS con el parche `NAOMI_HOST` de [dc2naomi](https://github.com/0skarzer0/dc2naomi/tree/main/homebrew/mk64) (Mario Kart 64) | `naomi_live` | sin verbo: lo sigue **hasta que se detiene** y vuelca la excepción y las 8 KB de log; `log`, `words` (con los 16 últimos PC del vblank) |
+
+```bash
+python3 live.py 10.0.0.4 0x8c357fe8 60          # mame4all, un minuto
+python3 live.py 0x8c2a1b40 log                   # consola de un juego del kit (NetDIMM: $NK_DIMM o 10.0.0.4)
+python3 live.py 10.0.0.4 0x8c173164 fps 60      # Daytona nativo
+python3 live.py 10.0.0.4 0x8c10d868              # Mario Kart 64
+```
+
+Para los programas de dc2naomi (`LIVE`), si una herramienta de peeks se cortó a medias, `--window0` devuelve la
+ventana de direcciones a la RAM antes de leer (solo para ellos: en otro programa ese poke escribiría la última palabra
+de la RAM). Y **sin `timehack.py` corriendo** mientras se lee: con los dos hablando a la NetDIMM los peeks devolvieron
+valores viejos (Mario Kart 64, 2026-11-13).
 
 ## Con otro programa
 

@@ -18,7 +18,7 @@ overlay), and add rows to `romsinfo.csv` safely. Code comments are in English, t
 | PC | [`pc/piput.py`](pc/piput.py) | Copia ficheros a la Raspberry por SFTP | ✅ usado a diario |
 | PC | [`pc/send_and_measure.sh`](pc/send_and_measure.sh) | Sube una imagen, la envía a la placa y lee sus cifras en directo | 🧪 versión general de la receta usada; probada sin placa |
 | Pi | [`pi/send_game.sh`](pi/send_game.sh) | Envía la imagen a la NetDIMM y deja vivo `timehack.py` (si no, «error 33») | 🧪 ídem |
-| Pi | [`pi/live.py`](pi/live.py) | Lee por la NetDIMM un bloque de datos del programa en marcha (fps, tiempos…) | 🧪 la versión de mame4all-naomi sí se usó en placa; esta, general, solo con una NetDIMM simulada |
+| Pi | [`pi/live.py`](pi/live.py) | **El lector «live» de todos los proyectos:** lee por la NetDIMM el bloque de datos del programa en marcha y lo reconoce por su firma: naomi-kit (`NKLV`), mame4all-naomi (`MAME`), Daytona nativo (`NEST`) y programas de KallistiOS con el parche `NAOMI_HOST` de dc2naomi (`LIVE`, Mario Kart 64); cualquier otro con `--fields`. Cifras por segundo, consola, palabras sueltas | 🧪 unificado el 2026-11-13 y probado con una NetDIMM simulada; los cinco lectores de los que sale sí se usaron en placa |
 | Pi | [`pi/add_romsinfo_rows.py`](pi/add_romsinfo_rows.py) | Añade filas a `romsinfo.csv` con copia previa y sin pegarlas a la anterior | 🧪 probado con un CSV de mentira |
 
 ✅ funciona en placa · 🧪 sin probar en la placa real todavía (los scripts nuevos se probaron sin ella).
