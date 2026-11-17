@@ -113,7 +113,7 @@ def mame(block, verb, seconds):
 
 # ---- "NKLV": naomi-kit (naomi_kit.h, nk_live_head; same reading as naomi-kit's tools/pi/nk_live.py) --------------
 NK_HEAD = ('magic version game names count seconds dimm_requests log_lines log_count log_width log_next heap_left '
-           'misaligned profile_pcs profile_count profile_size test_inputs inputs frames_alive').split()
+           'misaligned profile_pcs profile_count profile_size test_inputs inputs frames_alive profile_prs profile_waiting').split()
 NK_HEAD_WORDS = 24
 
 
