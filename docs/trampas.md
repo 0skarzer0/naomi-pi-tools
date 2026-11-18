@@ -23,8 +23,8 @@ CSV entero.
 ## Importar el CSV a la web de WiPi
 
 El menú web lee su propia copia (`/var/www/html/csv/romsinfo.csv`). Tras editar `/boot/config/romsinfo.csv`, se importa
-con `/sbin/piforce/importcsv.py`. **No he comprobado sus argumentos** (en las sesiones se ejecutó a mano); mira
-`python3 /sbin/piforce/importcsv.py --help` o su cabecera antes de automatizarlo.
+con `/sbin/piforce/importcsv.py`, que solo copia su primer argumento al segundo (comprobado su código el 2026-11-19):
+`python3 /sbin/piforce/importcsv.py /boot/config/romsinfo.csv /var/www/html/csv/romsinfo.csv`.
 
 ## Las imágenes tienen que ser `.bin.gz`
 
